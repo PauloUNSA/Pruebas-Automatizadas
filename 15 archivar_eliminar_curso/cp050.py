@@ -15,14 +15,17 @@ wait = WebDriverWait(driver, 15)
 
 
 try:
-    expand = '//*[@id="archived-table-heading"]/div/tm-panel-chevron/button'
+    expand = '//*[@id="deleted-table-heading"]/div/tm-panel-chevron/button'
     wait.until(EC.presence_of_element_located((By.XPATH, expand)))
     driver.find_element(By.XPATH, expand).click()
     time.sleep(2)
-    restore = '//*[@id="btn-unarchive-0"]'
-    wait.until(EC.presence_of_element_located((By.XPATH, restore)))
-    res =driver.find_element(By.XPATH, restore)
-    res.click()
+    delPer = '//*[@id="btn-delete-0"]'
+    wait.until(EC.presence_of_element_located((By.XPATH, delPer)))
+    delBot = driver.find_element(By.XPATH, delPer)
+    delBot.click()
+    confirm = '/html/body/ngb-modal-window/div/div/tm-confirmation-modal/div[4]/button[2]'
+    wait.until(EC.presence_of_element_located((By.XPATH, confirm)))
+    driver.find_element(By.XPATH, confirm).click()
 
 
 except Exception as e:

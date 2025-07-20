@@ -2,23 +2,35 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import time
 
-add = webdriver.ChromeOptions()
-add.add_argument(r'user-data-dir=C:\Users\paulo\chrome_automation_profile')
-driver = webdriver.Chrome(options=add)
+expand = webdriver.ChromeOptions()
+expand.add_argument(r'user-data-dir=C:\Users\paulo\chrome_automation_profile')
+driver = webdriver.Chrome(options=expand)
 driver.maximize_window()
-url_edicion = "https://teammates-escarabajo-462900.uc.r.appspot.com/web/instructor/students"
+#vera la unica pregunta existente, y su respectiva respuesta, que el mismo dio
+url_edicion = "https://teammates-escarabajo-462900.uc.r.appspot.com/web/instructor/courses"
 driver.get(url_edicion)
 wait = WebDriverWait(driver, 15)
 
+
 try:
-    labDropdown = '//*[@id="main-content"]/div/tm-instructor-student-list-page/tm-loading-retry/div[3]/div/div/div/tm-panel-chevron/button'
-    wait.until(EC.presence_of_element_located((By.XPATH, labDropdown)))
-    dropdown = driver.find_element(By.XPATH, labDropdown)
-    dropdown.click()
-    
+    expand = '//*[@id="archived-table-heading"]/div/tm-panel-chevron/button'
+    wait.until(EC.presence_of_element_located((By.XPATH, expand)))
+    driver.find_element(By.XPATH, expand).click()
+    time.sleep(1)
+    delete = '//*[@id="btn-soft-delete-archived-0"]'
+    wait.until(EC.presence_of_element_located((By.XPATH, delete)))
+    delBot =driver.find_element(By.XPATH, delete)
+    delBot.click()
+    confirm = '/html/body/ngb-modal-window/div/div/tm-confirmation-modal/div[4]/button[2]'
+    wait.until(EC.presence_of_element_located((By.XPATH, confirm)))
+    driver.find_element(By.XPATH, confirm).click()
+
+
 except Exception as e:
     print(f"Error detectado: {e}")
+
 
 input("Presiona ENTER para cerrar el navegador...")
 driver.quit()
